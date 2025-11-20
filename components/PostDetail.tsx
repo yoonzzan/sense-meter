@@ -79,7 +79,7 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, onClose, onPostReaction, 
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'AI 분석 요청 실패');
+        throw new Error(errorData.details || errorData.error || 'AI 분석 요청 실패');
       }
 
       const analysisJson = await response.json();
