@@ -6,32 +6,22 @@ import type { Post } from '../types';
 //   runtime: 'edge',
 // };
 
-export default async function handler(req: Request) {
+export default async function handler(req: any, res: any) {
   if (req.method !== 'POST') {
-    return new Response(JSON.stringify({ error: 'Method Not Allowed' }), {
-      status: 405,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
   const apiKey = process.env.GEMINI_API_KEY || process.env.API_KEY;
 
   if (!apiKey) {
-    return new Response(JSON.stringify({ error: 'API key is not configured on the server.' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return res.status(500).json({ error: 'API key is not configured on the server.' });
   }
 
   try {
-    const body = await req.json();
-    const post: Post = body.post;
+    const { post } = req.body;
 
     if (!post || !post.situation || !post.sensation) {
-      return new Response(JSON.stringify({ error: 'Post data is incomplete. "situation" and "sensation" are required.' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      });
+      return res.status(400).json({ error: 'Post data is incomplete. "situation" and "sensation" are required.' });
     }
 
     const totalVotes = post.agree_count + post.disagree_count;
@@ -108,16 +98,10 @@ export default async function handler(req: Request) {
     const textResponse = response.text ? response.text.trim() : "{}";
     const analysisJson = JSON.parse(textResponse);
 
-    return new Response(JSON.stringify(analysisJson), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return res.status(200).json(analysisJson);
 
   } catch (error: any) {
     console.error('Error in API route:', error);
-    return new Response(JSON.stringify({ error: 'Failed to get AI analysis.', details: error.message }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return res.status(500).json({ error: 'Failed to get AI analysis.', details: error.message });
   }
 }
