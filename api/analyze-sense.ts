@@ -102,6 +102,18 @@ export default async function handler(req: any, res: any) {
 
   } catch (error: any) {
     console.error('Error in API route:', error);
-    return res.status(500).json({ error: 'Failed to get AI analysis.', details: error.message });
+
+    // 에러 객체의 모든 속성을 문자열로 변환하여 상세 정보로 반환
+    const errorDetails = JSON.stringify(error, Object.getOwnPropertyNames(error));
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+
+    return res.status(500).json({
+      error: 'Failed to get AI analysis.',
+      details: `${errorMessage} (Debug: ${errorDetails})`,
+      debug: {
+        hasKey: !!apiKey,
+        model: 'gemini-1.5-flash'
+      }
+    });
   }
 }
