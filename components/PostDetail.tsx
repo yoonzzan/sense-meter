@@ -104,7 +104,7 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, onClose, onPostReaction, 
     <div className="fixed inset-0 bg-white z-20 flex flex-col">
       <header className="flex-shrink-0 flex items-center justify-between p-4 border-b border-gray-100">
         <button onClick={onClose} aria-label="뒤로가기">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-600"><path d="M15 18l-6-6 6-6" /></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-600"><path d="M15 18l-6-6 6-6" /></svg>
         </button>
         <h1 className="font-bold text-lg text-gray-800"></h1>
         <div className="w-6 h-6"></div>
