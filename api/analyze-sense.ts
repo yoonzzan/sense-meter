@@ -1,5 +1,4 @@
-import { GoogleGenerativeAI, SchemaType } from '@google/generative-ai';
-import type { Post } from '../types';
+import { GoogleGenerativeAI, SchemaType, type Schema } from '@google/generative-ai';
 
 // Vercel Edge Runtime 제거 (Node.js 런타임 사용)
 // export const config = {
@@ -30,7 +29,7 @@ export default async function handler(req: any, res: any) {
     let gapAnalysisPromptSection = '';
 
     // 기본 스키마 정의
-    const schema = {
+    const schema: Schema = {
       type: SchemaType.OBJECT,
       properties: {
         agree: {
