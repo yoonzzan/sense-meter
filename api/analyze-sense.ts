@@ -1,10 +1,10 @@
 import { GoogleGenAI, Type } from '@google/genai';
 import type { Post } from '../types';
 
-// Vercel Edge Runtime 사용 설정
-export const config = {
-  runtime: 'edge',
-};
+// Vercel Edge Runtime 제거 (Node.js 런타임 사용)
+// export const config = {
+//   runtime: 'edge',
+// };
 
 export default async function handler(req: Request) {
   if (req.method !== 'POST') {
@@ -93,7 +93,7 @@ export default async function handler(req: Request) {
       `;
 
     const response = await ai.models.generateContent({
-      model: 'gemini-2.0-flash-exp', // Updated to latest stable model if available, or keep 1.5-flash
+      model: 'gemini-1.5-flash', // Updated to latest stable model if available, or keep 1.5-flash
       contents: prompt,
       config: {
         responseMimeType: "application/json",
