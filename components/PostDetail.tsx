@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import type { Post } from '../types';
-import { X, ThumbsUp, ThumbsDown, Send, Plus, Users } from 'lucide-react';
+import { ThumbsUp, ThumbsDown, Send, Plus, Users } from 'lucide-react';
 import BrainIcon from './icons/BrainIcon';
 import LightbulbIcon from './icons/LightbulbIcon';
 import { formatTimestamp } from '../utils/formatTimestamp';

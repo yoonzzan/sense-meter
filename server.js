@@ -12,7 +12,9 @@ app.use(cors());
 app.use(express.json());
 
 app.post('/api/analyze-sense', async (req, res) => {
-    if (!process.env.API_KEY) {
+    const apiKey = process.env.GEMINI_API_KEY || process.env.API_KEY;
+
+    if (!apiKey) {
         console.warn('API key is missing. Returning mock response for testing.');
         // Mock response for testing
         return res.status(200).json({
@@ -63,7 +65,7 @@ app.post('/api/analyze-sense', async (req, res) => {
             };
         }
 
-        const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+        const ai = new GoogleGenAI({ apiKey });
         const prompt = `
         당신은 한국 20대의 일상 경험을 분석하는 위트 있고 통찰력 있는 심리 분석가입니다. 주어진 '객관적 상황'과 '커뮤니티 반응' 데이터를 종합하여, 사용자의 '주관적 감각'에 공감하는 입장과 공감하지 않는 입장을 모두 제시해주세요.
 
