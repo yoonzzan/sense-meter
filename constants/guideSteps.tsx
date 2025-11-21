@@ -23,7 +23,7 @@ export const GUIDE_STEPS = [
     },
     {
         icon: <Sparkles className="w-12 h-12 text-[#FF6B00]" />,
-        title: "당신이라면 좋아할 거에요 :)",
+        title: "당신이라면 좋아할 거에요 😊",
         text: "트렌드를 읽어야 하는 마케터, 사람의 마음을 얻어야 하는 기획자, 영감이 필요한 크리에이터에게 강력 추천합니다!",
     },
 ];
