@@ -249,7 +249,7 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, onClose, onPostReaction, 
                 <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
                   <h3 className="font-bold text-purple-800 mb-2 flex items-center gap-2 text-sm">
                     <LightbulbIcon className="w-4 h-4" />
-                    당신의 감각, 왜 달랐을까? 💡
+                    종합 인사이트 및 트렌드 📊
                   </h3>
                   <div className="text-sm text-gray-700 leading-relaxed prose prose-sm max-w-none prose-p:my-1 prose-ul:my-1 prose-li:my-0">
                     <ReactMarkdown>{aiAnalysis.gapAnalysis}</ReactMarkdown>
