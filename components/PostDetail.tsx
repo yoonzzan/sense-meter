@@ -241,9 +241,7 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, onClose, onPostReaction, 
             <BrainIcon className="w-6 h-6 text-gray-500" />
             <h2 className="font-bold text-base text-gray-800">AI 감각 분석</h2>
           </div>
-          import ReactMarkdown from 'react-markdown';
 
-          // ... (inside component)
 
           {aiAnalysis && !isLoadingAI && (
             <div className="space-y-6">
