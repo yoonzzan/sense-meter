@@ -12,7 +12,7 @@ export const GUIDE_STEPS = [
     {
         icon: <TargetIcon className="w-12 h-12 text-[#FF6B00]" />,
         title: "오늘의 최고와 최악을 기록해요.",
-        text: "일상 속 경험을 나누고 당신의 감각 데이터를 쌓아보세요. 정답은 없어요, 당신의 느낌이 중요할 뿐!",
+        text: "경험을 기록하면 AI가 나와 대중의 시각 차이를 분석하고, 그 속에 숨겨진 트렌드와 시장 기회를 읽어드립니다.",
     },
     {
         icon: <CommunityIcon className="w-12 h-12 text-[#FF6B00]" />,
