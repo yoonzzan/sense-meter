@@ -114,7 +114,8 @@ const App: React.FC = () => {
         ),
         reaction_tags(tag, count)
       `)
-      .order('created_at', { ascending: false });
+      .order('created_at', { ascending: false })
+      .eq('deleted_yn', 'N');
 
     if (error) {
       console.error('Error fetching posts:', error.message);
@@ -249,7 +250,7 @@ const App: React.FC = () => {
   const handleDeletePost = async (postId: number) => {
     if (!confirm('정말로 이 게시물을 삭제하시겠습니까?')) return;
 
-    const { error } = await supabase.from('posts').delete().eq('id', postId);
+    const { error } = await supabase.from('posts').update({ deleted_yn: 'Y' }).eq('id', postId);
 
     if (error) {
       console.error('Error deleting post:', error.message);
@@ -257,6 +258,29 @@ const App: React.FC = () => {
     } else {
       setPosts(posts.filter(p => p.id !== postId));
       setSelectedPostId(null);
+    }
+  };
+
+  const handleDeleteComment = async (postId: number, commentId: number) => {
+    if (!confirm('정말로 이 댓글을 삭제하시겠습니까?')) return;
+
+    const { error } = await supabase.from('comments').update({ deleted_yn: 'Y' }).eq('id', commentId);
+
+    if (error) {
+      console.error('Error deleting comment:', error.message);
+      alert(`댓글 삭제 실패: ${error.message}`);
+    } else {
+      const updatedPosts = posts.map(p => {
+        if (p.id === postId) {
+          return {
+            ...p,
+            comments: p.comments.filter(c => c.id !== commentId),
+            comments_count: p.comments_count - 1
+          };
+        }
+        return p;
+      });
+      setPosts(updatedPosts);
     }
   };
 
@@ -314,6 +338,7 @@ const App: React.FC = () => {
           onAddComment={handleAddComment}
           currentUserId={session?.user?.id}
           onDeletePost={handleDeletePost}
+          onDeleteComment={handleDeleteComment}
         />
       )}
 

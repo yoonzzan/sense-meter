@@ -15,6 +15,7 @@ interface PostDetailProps {
   onAddComment: (postId: number, commentText: string) => void;
   currentUserId?: string;
   onDeletePost: (postId: number) => void;
+  onDeleteComment: (postId: number, commentId: number) => void;
 }
 
 interface AIAnalysis {
@@ -23,7 +24,7 @@ interface AIAnalysis {
   gapAnalysis?: string;
 }
 
-const PostDetail: React.FC<PostDetailProps> = ({ post, onClose, onPostReaction, onAddReactionTag, onAddComment, currentUserId, onDeletePost }) => {
+const PostDetail: React.FC<PostDetailProps> = ({ post, onClose, onPostReaction, onAddReactionTag, onAddComment, currentUserId, onDeletePost, onDeleteComment }) => {
   const [commentText, setCommentText] = useState('');
   const [reactionTag, setReactionTag] = useState('');
   const [voted, setVoted] = useState<'agree' | 'disagree' | null>(null);
@@ -291,10 +292,18 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, onClose, onPostReaction, 
                   className="w-8 h-8 rounded-full mt-1 bg-gray-100"
                 />
                 <div className="flex-1">
-                  <div className="bg-gray-100 p-3 rounded-lg">
+                  <div className="bg-gray-100 p-3 rounded-lg relative group">
                     <p className="font-bold text-sm text-gray-900">{comment.author.display_name || '익명'}</p>
-
                     <p className="text-sm text-gray-800 mt-1">{comment.text}</p>
+                    {currentUserId === comment.author.id && (
+                      <button
+                        onClick={() => onDeleteComment(post.id, comment.id)}
+                        className="absolute top-2 right-2 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                        aria-label="댓글 삭제"
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    )}
                   </div>
                   <p className="text-xs text-gray-500 mt-1.5 ml-1">{formatTimestamp(comment.created_at)}</p>
                 </div>

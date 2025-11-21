@@ -2,6 +2,7 @@ export interface Profile {
   id: string;
   display_name: string | null;
   avatar_url: string | null;
+  deleted_yn?: string;
 }
 
 export interface Comment {
@@ -9,6 +10,7 @@ export interface Comment {
   created_at: string;
   text: string;
   author: Profile;
+  deleted_yn?: string;
 }
 
 export interface ReactionTag {
@@ -30,4 +32,5 @@ export interface Post {
   agree_count: number;
   disagree_count: number;
   reaction_tags: ReactionTag[]; // Joined from reaction_tags table
+  deleted_yn?: string;
 }
