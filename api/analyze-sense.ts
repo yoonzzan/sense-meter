@@ -34,15 +34,15 @@ export default async function handler(req: any, res: any) {
       properties: {
         agree: {
           type: SchemaType.STRING,
-          description: '사용자의 감정에 공감하며, 그 이유와 사용자의 성향을 추측하는 분석 내용입니다.'
+          description: '이 감각이 어필할 수 있는 타겟 오디언스 분석 및 현재 트렌드와의 연관성 (마케팅 관점)'
         },
         disagree: {
           type: SchemaType.STRING,
-          description: '객관적 상황을 바탕으로, 공감하지 않는 사람의 입장과 그 이유, 성향을 추측하는 분석 내용입니다.'
+          description: '대중적인 관점에서 공감받지 못하는 이유 및 시장성 한계 분석 (트렌드 분석 관점)'
         },
         gapAnalysis: {
           type: SchemaType.STRING,
-          description: '다수의 사람들과 감각의 차이가 발생한 이유에 대한 심층 분석 내용입니다.',
+          description: '나의 감각과 대중의 감각 간의 간극(Gap) 분석 및 감각 훈련을 위한 조언 (Sense Training)',
           nullable: true
         }
       },
@@ -52,11 +52,16 @@ export default async function handler(req: any, res: any) {
     if (hasSignificantGap) {
       const disagreePercentage = totalVotes > 0 ? (post.disagree_count / totalVotes) * 100 : 0;
       gapAnalysisPromptSection = `
-        3.  **감각 간극 심층 분석 (gapAnalysis):**
-            - 이 경험은 ${disagreePercentage.toFixed(0)}%의 사람들에게는 공감받지 못했습니다. 이처럼 '감각의 간극'이 발생한 이유를 심층적으로 분석해주세요.
-            - 사용자의 감각이 왜 소수의 의견이 되었을지, 그 원인을 가치관의 차이, 세대 차이, 개인적 경험의 특수성 등 다양한 각도에서 설명해주세요.
-            - 이 분석은 사용자가 자신의 독특한 감각을 이해하고 자책하지 않도록 돕는, 긍정적이고 건설적인 관점으로 제시되어야 합니다.
+        3.  **감각 간극 분석 및 훈련 (Gap Analysis & Sense Training):**
+            - 현재 이 감각은 ${disagreePercentage.toFixed(0)}%의 대중에게 공감받지 못하고 있습니다.
+            - **Gap의 원인**: 나의 감각이 대중적 트렌드와 어디서 어긋났는지, 혹은 너무 앞서가거나 니치한 것인지 분석해주세요.
+            - **감각 훈련 가이드**: 대중적인 공감대를 형성하기 위해 어떤 관점을 보완해야 할지, 혹은 이 독특한 감각을 어떻게 발전시켜야 차별화된 강점이 될지 구체적인 '훈련 방향'을 제시해주세요.
         `;
+    } else {
+      gapAnalysisPromptSection = `
+        3.  **감각 확장 제안 (Sense Expansion):**
+            - 이미 대중적인 공감을 얻고 있지만, 더 나아가 트렌드를 리드하기 위해 어떤 디테일을 더할 수 있을지 제안해주세요.
+       `;
     }
 
     const genAI = new GoogleGenerativeAI(apiKey);
@@ -69,24 +74,25 @@ export default async function handler(req: any, res: any) {
     });
 
     const prompt = `
-        당신은 한국 20대의 일상 경험을 분석하는 위트 있고 통찰력 있는 심리 분석가입니다. 주어진 '객관적 상황'과 '커뮤니티 반응' 데이터를 종합하여, 사용자의 '주관적 감각'에 공감하는 입장과 공감하지 않는 입장을 모두 제시해주세요.
+        당신은 최신 트렌드와 소비자 심리를 꿰뚫어 보는 '트렌드 & 마케팅 분석가'이자 '감각 훈련 코치'입니다.
+        사용자의 경험 데이터를 바탕으로, 이 감각이 시장에서 어떤 위치에 있는지 분석하고, 사용자가 대중적인 감각을 익히거나 자신만의 감각을 날카롭게 다듬을 수 있도록 코칭해주세요.
 
         ### 분석할 경험 데이터:
-        - 경험 종류: ${post.type === 'best' ? '최고의 경험' : '최악의 경험'}
+        - 경험 종류: ${post.type === 'best' ? '긍정적 경험' : '부정적 경험'}
         - 객관적 상황: "${post.situation}"
         - 주관적 감각: "${post.sensation}"
         - 감정 태그: ${post.emotion_tag}
-        - 커뮤니티 반응: ${post.agree_count}명 공감, ${post.disagree_count}명 비공감
+        - 커뮤니티 반응: ${post.agree_count}명 공감 (시장성 있음), ${post.disagree_count}명 비공감 (시장성 검증 필요)
 
         ### 분석 지침:
 
-        1.  **공감하는 시선 (agree):**
-            - '상황'과 '감각'을 연결하여, 왜 이 경험이 사용자에게 '최고' 또는 '최악'이었는지 깊이 공감하며 설명해주세요.
-            - 이 반응을 통해 추측할 수 있는 사용자의 성격, 가치관, 중요하게 생각하는 점 등을 짚어주세요. (예: "작은 디테일에서 큰 행복을 느끼시는 분인 것 같아요.")
+        1.  **타겟 오디언스 & 트렌드 분석 (agree):**
+            - 이 감각에 공감하는 사람들은 어떤 특성을 가진 '타겟 오디언스'일까요? (예: "가심비를 중시하는 Z세대", "효율성을 추구하는 직장인")
+            - 이 감각이 현재의 어떤 라이프스타일 트렌드나 마이크로 트렌드와 연결될 수 있는지 분석해주세요.
 
-        2.  **다른 시선 (disagree):**
-            - 오직 '객관적 상황'만을 두고 봤을 때, 왜 어떤 사람들은 이 경험에 공감하지 못할 수 있는지 설명해주세요.
-            - 그들이 공감하지 못하는 이유는 무엇일까요? 공감하지 않는 사람들은 어떤 성향이나 가치관을 가졌을지 추측해주세요. (예: "반면, 좀 더 실용적인 성향의 사람이라면...")
+        2.  **시장성 한계 & 대중의 시선 (disagree):**
+            - 마케팅 관점에서 볼 때, 이 감각이 '대중적 호소력'을 갖는 데 방해가 되는 요소는 무엇인가요?
+            - 일반적인 소비자 심리와 배치되는 지점이 있다면 냉철하게 분석해주세요.
 
         ${gapAnalysisPromptSection}
       `;
