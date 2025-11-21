@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { X, ThumbsUp, ThumbsDown } from 'lucide-react';
+import { X, ThumbsUp, ThumbsDown, Sparkles } from 'lucide-react';
 
 interface CreatePostProps {
   onClose: () => void;
   onPost: (post: { type: 'best' | 'worst'; category: string; situation: string; sensation: string; emotionTag: string; }) => void;
 }
 
-const popularTags = ['#뿌듯함', '#황당함', '#JMT', '#소확행', '#개이득'];
+const popularTags = ['#오히려좋아', '#갓생', '#킹받네', '#가보자고', '#럭키비키'];
 
 const CreatePost: React.FC<CreatePostProps> = ({ onClose, onPost }) => {
   const [type, setType] = useState<'best' | 'worst'>('best');
@@ -16,6 +16,8 @@ const CreatePost: React.FC<CreatePostProps> = ({ onClose, onPost }) => {
   const [emotionTag, setEmotionTag] = useState('');
   const [isComposing, setIsComposing] = useState(false);
   const [activeField, setActiveField] = useState<'situation' | 'sensation' | 'tag' | null>(null);
+  const [recommendedTags, setRecommendedTags] = useState<string[]>([]);
+  const [isRecommending, setIsRecommending] = useState(false);
 
   const categories = [
     { id: 'daily', label: '일상', icon: '🏠' },
@@ -68,6 +70,31 @@ const CreatePost: React.FC<CreatePostProps> = ({ onClose, onPost }) => {
     if (canPost) {
       // Ensure the tag is formatted before posting, in case blur/enter didn't fire
       onPost({ type, category, situation, sensation, emotionTag: formatTag(emotionTag) });
+    }
+  };
+
+  const handleRecommendTags = async () => {
+    if (!situation || !sensation) {
+      alert('상황과 감정을 먼저 작성해주세요!');
+      return;
+    }
+
+    setIsRecommending(true);
+    try {
+      const response = await fetch('/api/recommend-tags', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ situation, sensation }),
+      });
+      const data = await response.json();
+      if (data.tags) {
+        setRecommendedTags(data.tags);
+      }
+    } catch (error) {
+      console.error('Error recommending tags:', error);
+      alert('태그 추천 중 오류가 발생했습니다.');
+    } finally {
+      setIsRecommending(false);
     }
   };
 
@@ -200,7 +227,20 @@ const CreatePost: React.FC<CreatePostProps> = ({ onClose, onPost }) => {
         </div>
 
         <div>
-          <h2 className="font-bold mb-2">감정 태그</h2>
+          <div className="flex items-center justify-between mb-2">
+            <h2 className="font-bold">감정 태그</h2>
+            <button
+              onClick={handleRecommendTags}
+              disabled={isRecommending || !situation || !sensation}
+              className={`flex items-center space-x-1 text-xs px-3 py-1.5 rounded-full transition-colors ${isRecommending || !situation || !sensation
+                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                : 'bg-indigo-50 text-indigo-600 hover:bg-indigo-100'
+                }`}
+            >
+              <Sparkles size={14} />
+              <span>{isRecommending ? '분석 중...' : 'AI 추천'}</span>
+            </button>
+          </div>
           <input
             type="text"
             value={emotionTag}
@@ -216,6 +256,27 @@ const CreatePost: React.FC<CreatePostProps> = ({ onClose, onPost }) => {
             className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent"
             placeholder="#하나만_입력해_주세요"
           />
+
+          {/* Recommended Tags Area */}
+          {recommendedTags.length > 0 && (
+            <div className="mt-3 p-3 bg-indigo-50 rounded-lg border border-indigo-100">
+              <p className="text-xs text-indigo-800 font-bold mb-2 flex items-center">
+                <Sparkles size={12} className="mr-1" /> AI가 추천하는 태그
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {recommendedTags.map((tag, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handleTagClick(tag)}
+                    className="bg-white text-indigo-600 border border-indigo-200 text-sm font-medium px-3 py-1 rounded-full hover:bg-indigo-600 hover:text-white transition-colors"
+                  >
+                    {tag}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
           <div className="flex flex-wrap gap-2 mt-3">
             {popularTags.map(tag => (
               <button
