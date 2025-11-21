@@ -325,14 +325,15 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, onClose, onPostReaction, 
       </main>
 
       {/* Comment Input */}
-      <footer className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
+      <footer className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 pb-[env(safe-area-inset-bottom)]">
         <form onSubmit={handleCommentSubmit} className="max-w-xl mx-auto flex items-center p-3 gap-2">
           <input
             type="text"
             value={commentText}
             onChange={(e) => setCommentText(e.target.value)}
-            className="flex-grow w-full bg-gray-100 border border-transparent rounded-full py-2.5 px-4 focus:outline-none focus:ring-2 focus:ring-[#FF6B00] text-sm text-gray-800 placeholder-gray-500"
+            className="flex-grow w-full bg-gray-100 border border-transparent rounded-full py-2.5 px-4 focus:outline-none focus:ring-2 focus:ring-[#FF6B00] text-base text-gray-800 placeholder-gray-500"
             placeholder="댓글을 입력하세요..."
+            style={{ fontSize: '16px' }} // Explicitly enforce 16px to prevent iOS zoom
           />
           <button type="submit" disabled={!commentText.trim()} className="p-2.5 rounded-full bg-[#FF6B00] text-white disabled:bg-gray-300 transition-colors">
             <Send size={18} />
