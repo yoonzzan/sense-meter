@@ -12,12 +12,12 @@ export const GUIDE_STEPS = [
         text: "나의 감각과 세상의 감각 사이, 그 아슬아슬한 온도 차이를 재볼까요?",
     },
     {
-        icon: <TargetIcon className="w-12 h-12 text-[#FF6B00]" />,
+        icon: <CommunityIcon className="w-12 h-12 text-[#FF6B00]" />,
         title: "오늘의 최고와 최악을 기록해요.",
         text: "다른 사람들은 어떻게 느꼈을까요? 서로의 감각을 비교하며 트렌드를 읽는 눈을 단련해 보세요.",
     },
     {
-        icon: <CommunityIcon className="w-12 h-12 text-[#FF6B00]" />,
+        icon: <TargetIcon className="w-12 h-12 text-[#FF6B00]" />,
         title: "세상의 감각과 온도를 맞춰봐요.",
         text: "경험을 기록하면 AI가 나와 대중의 시각 차이를 분석하고, 그 속에 숨겨진 트렌드와 시장 기회를 읽어드립니다.",
     },
