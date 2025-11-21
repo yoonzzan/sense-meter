@@ -5,6 +5,7 @@ import { ThumbsUp, ThumbsDown, Send, Plus, Users, Trash2 } from 'lucide-react';
 import BrainIcon from './icons/BrainIcon';
 import LightbulbIcon from './icons/LightbulbIcon';
 import { formatTimestamp } from '../utils/formatTimestamp';
+import ReactMarkdown from 'react-markdown';
 // import { GoogleGenAI, Type } from '@google/genai'; // Removed direct SDK usage
 
 interface PostDetailProps {
@@ -240,6 +241,10 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, onClose, onPostReaction, 
             <BrainIcon className="w-6 h-6 text-gray-500" />
             <h2 className="font-bold text-base text-gray-800">AI 감각 분석</h2>
           </div>
+          import ReactMarkdown from 'react-markdown';
+
+          // ... (inside component)
+
           {aiAnalysis && !isLoadingAI && (
             <div className="space-y-6">
               {aiAnalysis.gapAnalysis && (
@@ -248,7 +253,9 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, onClose, onPostReaction, 
                     <LightbulbIcon className="w-4 h-4" />
                     당신의 감각, 왜 달랐을까? 💡
                   </h3>
-                  <p className="text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">{aiAnalysis.gapAnalysis}</p>
+                  <div className="text-sm text-gray-700 leading-relaxed prose prose-sm max-w-none prose-p:my-1 prose-ul:my-1 prose-li:my-0">
+                    <ReactMarkdown>{aiAnalysis.gapAnalysis}</ReactMarkdown>
+                  </div>
                 </div>
               )}
               <div className="p-4 bg-green-50 rounded-lg border border-green-200">
@@ -256,14 +263,18 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, onClose, onPostReaction, 
                   <ThumbsUp className="w-4 h-4" />
                   공감하는 시선 🧐
                 </h3>
-                <p className="text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">{aiAnalysis.agree}</p>
+                <div className="text-sm text-gray-700 leading-relaxed prose prose-sm max-w-none prose-p:my-1 prose-ul:my-1 prose-li:my-0">
+                  <ReactMarkdown>{aiAnalysis.agree}</ReactMarkdown>
+                </div>
               </div>
               <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
                 <h3 className="font-bold text-blue-800 mb-2 flex items-center gap-2 text-sm">
                   <ThumbsDown className="w-4 h-4" />
                   다른 시선 👀
                 </h3>
-                <p className="text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">{aiAnalysis.disagree}</p>
+                <div className="text-sm text-gray-700 leading-relaxed prose prose-sm max-w-none prose-p:my-1 prose-ul:my-1 prose-li:my-0">
+                  <ReactMarkdown>{aiAnalysis.disagree}</ReactMarkdown>
+                </div>
               </div>
             </div>
           )}
