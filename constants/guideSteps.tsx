@@ -14,12 +14,12 @@ export const GUIDE_STEPS = [
     {
         icon: <CommunityIcon className="w-12 h-12 text-[#FF6B00]" />,
         title: "오늘의 최고와 최악을 기록해요.",
-        text: "다른 사람들은 어떻게 느꼈을까요? 서로의 감각을 비교하며 트렌드를 읽는 눈을 단련해 보세요.",
+        text: "다른 사람들은 어떤 감정을 느꼈을까요? 서로의 감정을 비교하며 트렌드를 읽는 감각을 단련해 보세요.",
     },
     {
         icon: <TargetIcon className="w-12 h-12 text-[#FF6B00]" />,
         title: "세상의 감각과 온도를 맞춰봐요.",
-        text: "경험을 기록하면 AI가 나와 대중의 시각 차이를 분석하고, 그 속에 숨겨진 트렌드와 시장 기회를 읽어드립니다.",
+        text: "내 감정과 대중의 감정을 비교하는 과정, 그것이 바로 감각을 익히는 길이에요. AI가 그 속에 숨겨진 트렌드와 시장 기회를 읽어드립니다.",
     },
     {
         icon: <Sparkles className="w-12 h-12 text-[#FF6B00]" />,

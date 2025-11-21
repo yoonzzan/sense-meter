@@ -113,7 +113,7 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, onClose, onPostReaction, 
   }, []);
 
   return (
-    <div className="fixed inset-0 h-[100dvh] bg-white z-20 flex flex-col overscroll-none touch-pan-y">
+    <div className="fixed inset-0 h-[100dvh] bg-white z-20 flex flex-col overscroll-none touch-pan-y overflow-x-hidden">
       <header className="flex-shrink-0 flex items-center justify-between p-4 border-b border-gray-100">
         <button onClick={onClose} aria-label="뒤로가기">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-600"><path d="M15 18l-6-6 6-6" /></svg>
@@ -151,7 +151,7 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, onClose, onPostReaction, 
               </div>
               <p className="text-gray-800 leading-relaxed text-[15px] mb-4">{post.situation}</p>
               <div className="border-t border-dashed pt-4">
-                <p className="text-xs text-gray-500 font-bold mb-2">💬 나의 감각</p>
+                <p className="text-xs text-gray-500 font-bold mb-2">💬 나의 감정</p>
                 <p className="text-gray-700 leading-relaxed text-[14px] italic">{post.sensation}</p>
               </div>
             </div>
