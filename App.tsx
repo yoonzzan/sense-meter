@@ -246,6 +246,20 @@ const App: React.FC = () => {
     }
   };
 
+  const handleDeletePost = async (postId: number) => {
+    if (!confirm('정말로 이 게시물을 삭제하시겠습니까?')) return;
+
+    const { error } = await supabase.from('posts').delete().eq('id', postId);
+
+    if (error) {
+      console.error('Error deleting post:', error.message);
+      alert(`게시물 삭제 실패: ${error.message}`);
+    } else {
+      setPosts(posts.filter(p => p.id !== postId));
+      setSelectedPostId(null);
+    }
+  };
+
   const handleEditProfileUpdate = () => {
     if (session) fetchProfile(session.user.id);
   };
@@ -298,6 +312,8 @@ const App: React.FC = () => {
           onPostReaction={handlePostReaction}
           onAddReactionTag={handleAddReactionTag}
           onAddComment={handleAddComment}
+          currentUserId={session?.user?.id}
+          onDeletePost={handleDeletePost}
         />
       )}
 

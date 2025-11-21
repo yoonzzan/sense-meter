@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import type { Post } from '../types';
-import { ThumbsUp, ThumbsDown, Send, Plus, Users } from 'lucide-react';
+import { ThumbsUp, ThumbsDown, Send, Plus, Users, Trash2 } from 'lucide-react';
 import BrainIcon from './icons/BrainIcon';
 import LightbulbIcon from './icons/LightbulbIcon';
 import { formatTimestamp } from '../utils/formatTimestamp';
@@ -13,6 +13,8 @@ interface PostDetailProps {
   onPostReaction: (postId: number, reaction: 'agree' | 'disagree') => void;
   onAddReactionTag: (postId: number, tag: string) => void;
   onAddComment: (postId: number, commentText: string) => void;
+  currentUserId?: string;
+  onDeletePost: (postId: number) => void;
 }
 
 interface AIAnalysis {
@@ -21,7 +23,7 @@ interface AIAnalysis {
   gapAnalysis?: string;
 }
 
-const PostDetail: React.FC<PostDetailProps> = ({ post, onClose, onPostReaction, onAddReactionTag, onAddComment }) => {
+const PostDetail: React.FC<PostDetailProps> = ({ post, onClose, onPostReaction, onAddReactionTag, onAddComment, currentUserId, onDeletePost }) => {
   const [commentText, setCommentText] = useState('');
   const [reactionTag, setReactionTag] = useState('');
   const [voted, setVoted] = useState<'agree' | 'disagree' | null>(null);
@@ -107,7 +109,14 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, onClose, onPostReaction, 
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-gray-600"><path d="M15 18l-6-6 6-6" /></svg>
         </button>
         <h1 className="font-bold text-lg text-gray-800"></h1>
-        <div className="w-6 h-6"></div>
+        <div className="flex items-center gap-2">
+          {currentUserId === post.author.id && (
+            <button onClick={() => onDeletePost(post.id)} className="text-gray-400 hover:text-red-500 transition-colors" aria-label="삭제">
+              <Trash2 size={20} />
+            </button>
+          )}
+          <div className="w-6 h-6"></div>
+        </div>
       </header>
 
       <main className="flex-grow overflow-y-auto pb-24 bg-gray-50">
