@@ -5,6 +5,7 @@ import type { Post, Profile } from './types';
 
 import AuthComponent from './components/Auth';
 import Onboarding from './components/Onboarding';
+import GuideBanner from './components/GuideBanner';
 import Header from './components/Header';
 import MainFeed from './components/MainFeed';
 import CreatePost from './components/CreatePost';
@@ -288,8 +289,22 @@ const App: React.FC = () => {
     if (session) fetchProfile(session.user.id);
   };
 
+  const [activeTab, setActiveTab] = useState<'all' | 'best' | 'worst' | 'my'>('all');
+
+  const filteredPosts = posts.filter(post => {
+    if (activeTab === 'all') return true;
+    if (activeTab === 'best') return post.type === 'best';
+    if (activeTab === 'worst') return post.type === 'worst';
+    if (activeTab === 'my') return session && post.author.id === session.user.id;
+    return true;
+  });
+
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center bg-gray-50">Loading...</div>;
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+      </div>
+    );
   }
 
   if (!session) {
@@ -301,15 +316,62 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pb-20 pt-16">
       <Header
         profile={profile}
         onSignOut={handleSignOut}
         onEditProfile={() => setShowEditProfile(true)}
       />
 
+      {/* Tab Navigation */}
+      <div className="sticky top-16 z-10 bg-white border-b border-gray-200">
+        <div className="max-w-xl mx-auto px-4">
+          <div className="flex justify-center space-x-6 overflow-x-auto no-scrollbar">
+            <button
+              onClick={() => setActiveTab('all')}
+              className={`py-3 text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${activeTab === 'all'
+                ? 'border-indigo-600 text-indigo-600'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+            >
+              전체
+            </button>
+            <button
+              onClick={() => setActiveTab('best')}
+              className={`py-3 text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${activeTab === 'best'
+                ? 'border-indigo-600 text-indigo-600'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+            >
+              최고
+            </button>
+            <button
+              onClick={() => setActiveTab('worst')}
+              className={`py-3 text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${activeTab === 'worst'
+                ? 'border-indigo-600 text-indigo-600'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+            >
+              최악
+            </button>
+            <button
+              onClick={() => setActiveTab('my')}
+              className={`py-3 text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${activeTab === 'my'
+                ? 'border-indigo-600 text-indigo-600'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+            >
+              내 감각
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Guide Banner */}
+      <GuideBanner />
+
       <MainFeed
-        posts={posts}
+        posts={filteredPosts}
         onPostClick={(post: Post) => setSelectedPostId(post.id)}
         onLikePost={handleLikePost}
       />

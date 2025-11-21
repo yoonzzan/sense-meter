@@ -10,7 +10,7 @@ interface MainFeedProps {
 
 const MainFeed: React.FC<MainFeedProps> = ({ posts, onPostClick, onLikePost }) => {
   return (
-    <main className="pt-20 pb-20">
+    <main className="pt-4 pb-20">
       <div className="max-w-xl mx-auto px-4 space-y-4">
         {posts.map((post) => (
           <div key={post.id} onClick={() => onPostClick(post)} className="cursor-pointer">
