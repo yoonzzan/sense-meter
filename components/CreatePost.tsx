@@ -3,17 +3,48 @@ import { X, ThumbsUp, ThumbsDown } from 'lucide-react';
 
 interface CreatePostProps {
   onClose: () => void;
-  onPost: (post: { type: 'best' | 'worst'; situation: string; sensation: string; emotionTag: string; }) => void;
+  onPost: (post: { type: 'best' | 'worst'; category: string; situation: string; sensation: string; emotionTag: string; }) => void;
 }
 
 const popularTags = ['#뿌듯함', '#황당함', '#JMT', '#소확행', '#개이득'];
 
 const CreatePost: React.FC<CreatePostProps> = ({ onClose, onPost }) => {
   const [type, setType] = useState<'best' | 'worst'>('best');
+  const [category, setCategory] = useState('daily');
   const [situation, setSituation] = useState('');
   const [sensation, setSensation] = useState('');
   const [emotionTag, setEmotionTag] = useState('');
   const [isComposing, setIsComposing] = useState(false);
+  const [activeField, setActiveField] = useState<'situation' | 'sensation' | 'tag' | null>(null);
+
+  const categories = [
+    { id: 'daily', label: '일상', icon: '🏠' },
+    { id: 'work', label: '직장', icon: '💼' },
+    { id: 'relationship', label: '관계', icon: '👥' },
+    { id: 'consumption', label: '소비', icon: '🛒' },
+    { id: 'service', label: '서비스', icon: '🛎️' },
+    { id: 'content', label: '콘텐츠', icon: '🎬' },
+    { id: 'hobby', label: '취미', icon: '🎨' },
+    { id: 'etc', label: '기타', icon: '✨' },
+  ];
+
+  const guides = {
+    situation: {
+      title: '💡 상황 작성 팁',
+      text: '감정을 섞지 않고, 있었던 일(Fact)만 객관적으로 적어주시면 좋아요.',
+      example: '예시: 오늘 아침 출근길 지하철에서...'
+    },
+    sensation: {
+      title: '💡 감정 작성 팁',
+      text: '그 순간 느꼈던 솔직한 감정을 적어주세요. 내 감정과 대중의 반응을 비교해보는 것이 바로 감각을 익히는 과정이에요.',
+      example: '예시: 너무 억울하고 답답해서 소리라도 지르고 싶었어요.'
+    },
+    tag: {
+      title: '💡 태그 작성 팁',
+      text: '이 경험을 한마디로 표현하는 핵심 키워드를 적어주세요.',
+      example: '예시: #지옥철 #출근길'
+    }
+  };
 
   const formatTag = (tag: string): string => {
     if (!tag) return '';
@@ -22,7 +53,7 @@ const CreatePost: React.FC<CreatePostProps> = ({ onClose, onPost }) => {
     if (!cleanedTag) return '';
     return `#${cleanedTag}`;
   };
-  
+
   const handleFormatAndSetTag = (value: string) => {
     const formatted = formatTag(value);
     setEmotionTag(formatted);
@@ -36,14 +67,14 @@ const CreatePost: React.FC<CreatePostProps> = ({ onClose, onPost }) => {
   const handlePost = () => {
     if (canPost) {
       // Ensure the tag is formatted before posting, in case blur/enter didn't fire
-      onPost({ type, situation, sensation, emotionTag: formatTag(emotionTag) });
+      onPost({ type, category, situation, sensation, emotionTag: formatTag(emotionTag) });
     }
   };
-  
+
   const handleTagClick = (tag: string) => {
     setEmotionTag(tag);
   };
-  
+
   const handleEmotionTagChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     // We always update the state to show what the user is typing.
     // The isComposing flag is used to prevent premature formatting, not to block input.
@@ -53,7 +84,7 @@ const CreatePost: React.FC<CreatePostProps> = ({ onClose, onPost }) => {
   const handleCompositionStart = () => {
     setIsComposing(true);
   };
-  
+
   const handleCompositionEnd = (e: React.CompositionEvent<HTMLInputElement>) => {
     setIsComposing(false);
     // After composition ends, ensure React's state is synced with the input's final value.
@@ -96,18 +127,16 @@ const CreatePost: React.FC<CreatePostProps> = ({ onClose, onPost }) => {
         <div className="grid grid-cols-2 gap-4">
           <button
             onClick={() => setType('best')}
-            className={`flex flex-col items-center justify-center space-y-2 p-4 rounded-lg border-2 transition-all ${
-              type === 'best' ? 'border-[#FF6B00] bg-orange-50' : 'border-gray-300 bg-white'
-            }`}
+            className={`flex flex-col items-center justify-center space-y-2 p-4 rounded-lg border-2 transition-all ${type === 'best' ? 'border-[#FF6B00] bg-orange-50' : 'border-gray-300 bg-white'
+              }`}
           >
             <ThumbsUp className={`w-6 h-6 ${type === 'best' ? 'text-orange-500' : 'text-gray-400'}`} />
             <span className={`font-bold ${type === 'best' ? 'text-orange-600' : 'text-gray-600'}`}>최고예요</span>
           </button>
           <button
             onClick={() => setType('worst')}
-            className={`flex flex-col items-center justify-center space-y-2 p-4 rounded-lg border-2 transition-all ${
-              type === 'worst' ? 'border-blue-500 bg-blue-50' : 'border-gray-300 bg-white'
-            }`}
+            className={`flex flex-col items-center justify-center space-y-2 p-4 rounded-lg border-2 transition-all ${type === 'worst' ? 'border-blue-500 bg-blue-50' : 'border-gray-300 bg-white'
+              }`}
           >
             <ThumbsDown className={`w-6 h-6 ${type === 'worst' ? 'text-blue-500' : 'text-gray-400'}`} />
             <span className={`font-bold ${type === 'worst' ? 'text-blue-600' : 'text-gray-600'}`}>최악이에요</span>
@@ -115,24 +144,58 @@ const CreatePost: React.FC<CreatePostProps> = ({ onClose, onPost }) => {
         </div>
 
         <div>
-           <h2 className="font-bold mb-2">경험 내용</h2>
+          <h2 className="font-bold mb-2">카테고리</h2>
+          <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
+            {categories.map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => setCategory(cat.id)}
+                className={`flex items-center space-x-1 px-4 py-2 rounded-full border transition-all whitespace-nowrap ${category === cat.id
+                  ? 'border-[#FF6B00] bg-orange-50 text-[#FF6B00] font-bold'
+                  : 'border-gray-300 bg-white text-gray-600'
+                  }`}
+              >
+                <span>{cat.icon}</span>
+                <span>{cat.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Dynamic Guide Box */}
+        <div className={`transition-all duration-300 overflow-hidden ${activeField ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'}`}>
+          {activeField && (
+            <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 mb-4">
+              <h3 className="text-blue-800 font-bold text-sm mb-1">{guides[activeField].title}</h3>
+              <p className="text-blue-600 text-xs mb-1">{guides[activeField].text}</p>
+              <p className="text-blue-500 text-xs italic">{guides[activeField].example}</p>
+            </div>
+          )}
+        </div>
+
+        <div>
+          <h2 className="font-bold mb-2">경험 내용</h2>
           <textarea
             value={situation}
             onChange={(e) => setSituation(e.target.value)}
-            rows={5}
-            className="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent resize-none"
+            onFocus={() => setActiveField('situation')}
+            onBlur={() => setActiveField(null)}
+            rows={4}
+            className="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent resize-none text-sm"
             placeholder="어떤 상황이었나요?&#10;있었던 일을 객관적으로 알려주세요."
           />
         </div>
 
         <div>
-           <h2 className="font-bold mb-2">나의 감각</h2>
+          <h2 className="font-bold mb-2">나의 감정</h2>
           <textarea
             value={sensation}
             onChange={(e) => setSensation(e.target.value)}
-            rows={5}
-            className="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent resize-none"
-            placeholder="그 상황에서 어떤 감정을 느끼셨나요?&#10;당신의 감각을 들려주세요."
+            onFocus={() => setActiveField('sensation')}
+            onBlur={() => setActiveField(null)}
+            rows={4}
+            className="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent resize-none text-sm"
+            placeholder="그 상황에서 어떤 감정을 느끼셨나요?&#10;솔직한 마음을 기록해주세요."
           />
         </div>
 
@@ -144,22 +207,26 @@ const CreatePost: React.FC<CreatePostProps> = ({ onClose, onPost }) => {
             onChange={handleEmotionTagChange}
             onCompositionStart={handleCompositionStart}
             onCompositionEnd={handleCompositionEnd}
-            onBlur={handleBlur}
+            onBlur={(e) => {
+              handleBlur(e);
+              setActiveField(null);
+            }}
+            onFocus={() => setActiveField('tag')}
             onKeyDown={handleKeyDown}
             className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF6B00] focus:border-transparent"
             placeholder="#하나만_입력해_주세요"
           />
-           <div className="flex flex-wrap gap-2 mt-3">
-              {popularTags.map(tag => (
-                <button 
-                  key={tag} 
-                  onClick={() => handleTagClick(tag)}
-                  className="bg-gray-100 text-gray-600 text-sm font-medium px-3 py-1 rounded-full hover:bg-gray-200"
-                >
-                  {tag}
-                </button>
-              ))}
-           </div>
+          <div className="flex flex-wrap gap-2 mt-3">
+            {popularTags.map(tag => (
+              <button
+                key={tag}
+                onClick={() => handleTagClick(tag)}
+                className="bg-gray-100 text-gray-600 text-sm font-medium px-3 py-1 rounded-full hover:bg-gray-200"
+              >
+                {tag}
+              </button>
+            ))}
+          </div>
         </div>
       </main>
     </div>

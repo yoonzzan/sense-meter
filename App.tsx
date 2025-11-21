@@ -147,12 +147,13 @@ const App: React.FC = () => {
     }
   };
 
-  const handleCreatePost = async (postData: { type: 'best' | 'worst'; situation: string; sensation: string; emotionTag: string; }) => {
+  const handleCreatePost = async (postData: { type: 'best' | 'worst'; category: string; situation: string; sensation: string; emotionTag: string; }) => {
     if (!session) return;
 
     const { error } = await supabase.from('posts').insert({
       author_id: session.user.id,
       type: postData.type,
+      category: postData.category,
       situation: postData.situation,
       sensation: postData.sensation,
       emotion_tag: postData.emotionTag,

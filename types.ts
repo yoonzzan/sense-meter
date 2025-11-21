@@ -21,6 +21,7 @@ export interface ReactionTag {
 export interface Post {
   id: number;
   created_at: string;
+  category: string;
   type: 'best' | 'worst';
   situation: string;
   sensation: string;
