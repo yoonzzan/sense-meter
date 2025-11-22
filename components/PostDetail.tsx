@@ -167,9 +167,9 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, onClose, onPostReaction, 
         <div className="bg-white p-5 mt-2 border-y border-gray-100">
           <div className="flex items-center gap-2 mb-1">
             <Users className="w-5 h-5 text-gray-400" />
-            <h2 className="font-bold text-base text-gray-800">세상의 감각</h2>
+            <h2 className="font-bold text-base text-gray-800">공감 온도계</h2>
           </div>
-          <p className="text-sm text-gray-500 mb-4 ml-1">이 경험에 대해 다른 사람들은 어떻게 생각할까요?</p>
+          <p className="text-sm text-gray-500 mb-4 ml-1">이 경험에 대해 다른 사람들은 어떻게 느낄까요?</p>
 
           <div className="w-full flex h-2.5 mb-2 overflow-hidden rounded-full bg-gray-200">
             <div className="bg-green-500 transition-all duration-500" style={{ width: `${agreePercentage}%` }}></div>

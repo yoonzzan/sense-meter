@@ -201,7 +201,7 @@ const CreatePost: React.FC<CreatePostProps> = ({ onClose, onPost }) => {
         </div>
 
         <div>
-          <h2 className="font-bold mb-2">경험 내용</h2>
+          <h2 className="font-bold mb-2">상황 (무슨 일이 있었나요?)</h2>
           <textarea
             value={situation}
             onChange={(e) => setSituation(e.target.value)}

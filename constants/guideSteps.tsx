@@ -9,7 +9,7 @@ export const GUIDE_STEPS = [
     {
         icon: <ThermometerIcon className="w-12 h-12 text-[#FF6B00]" />,
         title: "혹시... '감' 좋은 편?",
-        text: "나의 감각과 세상의 감각 사이, 그 아슬아슬한 온도 차이를 재볼까요?",
+        text: "내가 느낀 감정, 아이디어. 사람들도 공감할까요? 나와 세상의 온도 차이를 재보며 감각을 키워요.",
     },
     {
         icon: <CommunityIcon className="w-12 h-12 text-[#FF6B00]" />,
@@ -18,8 +18,8 @@ export const GUIDE_STEPS = [
     },
     {
         icon: <TargetIcon className="w-12 h-12 text-[#FF6B00]" />,
-        title: "세상의 감각과 온도를 맞춰봐요.",
-        text: "내 감정과 대중의 감정을 비교하는 과정, 그것이 바로 감각을 익히는 길이에요. AI가 그 속에 숨겨진 트렌드와 시장 기회를 읽어드립니다.",
+        title: "시장 기회를 찾아봐요",
+        text: "경험과 공감 온도계 속 숨겨진 트렌드를 AI와 함께 발견해봐요.",
     },
     {
         icon: <Sparkles className="w-12 h-12 text-[#FF6B00]" />,
