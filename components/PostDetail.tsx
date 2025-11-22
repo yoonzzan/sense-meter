@@ -295,7 +295,12 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, onClose, onPostReaction, 
               </div>
             )}
             {isLoadingAI && (
-              <div className="text-sm text-gray-500 text-center py-4">AI가 숨겨진 트렌드와 시장 기회를 분석하고 있어요...</div>
+              <div className="flex flex-col items-center justify-center py-8 space-y-3">
+                <div className="text-4xl animate-bounce">🌊</div>
+                <div className="text-sm text-gray-500 font-medium animate-pulse">
+                  AI가 숨겨진 트렌드 파도를 분석하고 있어요...
+                </div>
+              </div>
             )}
             {aiError && (
               <div className="text-sm text-red-600 text-center py-4">{aiError}</div>
