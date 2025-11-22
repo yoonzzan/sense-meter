@@ -256,7 +256,7 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, onClose, onPostReaction, 
         <div className="bg-white p-5 mt-2 border-y border-gray-100">
           <div className="flex items-center gap-2 mb-3">
             <BrainIcon className="w-6 h-6 text-gray-500" />
-            <h2 className="font-bold text-base text-gray-800">AI 감각 분석</h2>
+            <h2 className="font-bold text-base text-gray-800">AI와 힌트 발견하기</h2>
           </div>
 
 
@@ -294,14 +294,14 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, onClose, onPostReaction, 
             </div>
           )}
           {isLoadingAI && (
-            <div className="text-sm text-gray-500 text-center py-4">AI가 당신의 감각을 다각도로 분석하고 있어요...</div>
+            <div className="text-sm text-gray-500 text-center py-4">AI가 숨겨진 트렌드와 시장 기회를 분석하고 있어요...</div>
           )}
           {aiError && (
             <div className="text-sm text-red-600 text-center py-4">{aiError}</div>
           )}
           {!aiAnalysis && !isLoadingAI && (
             <button onClick={handleGetAIAnalysis} className="w-full bg-gray-800 text-white font-bold py-3 rounded-lg hover:bg-gray-700 transition-colors">
-              이 감각, AI는 어떻게 볼까?
+              이 감각 물결은 얼마나 큰 파도가 될 수 있을까?
             </button>
           )}
         </div>
