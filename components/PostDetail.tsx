@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import type { Post } from '../types';
-import { ThumbsUp, ThumbsDown, Send, Plus, Users, Trash2 } from 'lucide-react';
+import { ThumbsUp, ThumbsDown, Send, Plus, Trash2, Thermometer } from 'lucide-react';
 import BrainIcon from './icons/BrainIcon';
 import LightbulbIcon from './icons/LightbulbIcon';
 import { formatTimestamp } from '../utils/formatTimestamp';
@@ -100,7 +100,6 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, onClose, onPostReaction, 
 
   const totalVotes = post.agree_count + post.disagree_count;
   const agreePercentage = totalVotes > 0 ? (post.agree_count / totalVotes) * 100 : 0;
-  const disagreePercentage = totalVotes > 0 ? (post.disagree_count / totalVotes) * 100 : 0;
 
   const sortedReactionTags = [...post.reaction_tags].sort((a, b) => b.count - a.count);
 
@@ -145,9 +144,9 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, onClose, onPostReaction, 
           </div>
 
           <div className="space-y-4 text-sm mb-4">
-            <div className={`border-l-4 p-4 rounded-r-md ${isBest ? 'bg-orange-50 border-orange-400' : 'bg-blue-50 border-blue-400'}`}>
+            <div className={`border-l-4 p-4 rounded-r-md ${isBest ? 'bg-rose-50 border-rose-400' : 'bg-blue-50 border-blue-400'}`}>
               <div className="flex items-center gap-2 mb-2">
-                <span className={`font-bold text-base ${isBest ? 'text-orange-800' : 'text-blue-800'}`}>{isBest ? '오늘의 최고 👍' : '오늘의 최악 👎'}</span>
+                <span className={`font-bold text-base ${isBest ? 'text-rose-800' : 'text-blue-800'}`}>{isBest ? '오늘의 최고 👍' : '오늘의 최악 👎'}</span>
               </div>
               <p className="text-gray-800 leading-relaxed text-[15px] mb-4">{post.situation}</p>
               <div className="border-t border-dashed pt-4">
@@ -166,19 +165,29 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, onClose, onPostReaction, 
         {/* Sense Meter */}
         <div className="bg-white p-5 mt-2 border-y border-gray-100">
           <div className="flex items-center gap-2 mb-1">
-            <Users className="w-5 h-5 text-gray-400" />
+            <Thermometer className="w-5 h-5 text-[#FF6B00]" />
             <h2 className="font-bold text-base text-gray-800">공감 온도계</h2>
           </div>
           <p className="text-sm text-gray-500 mb-4 ml-1">이 경험에 대해 다른 사람들은 어떻게 느낄까요?</p>
 
-          <div className="w-full flex h-2.5 mb-2 overflow-hidden rounded-full bg-gray-200">
-            <div className="bg-green-500 transition-all duration-500" style={{ width: `${agreePercentage}%` }}></div>
-            <div className="bg-red-500 transition-all duration-500" style={{ width: `${disagreePercentage}%` }}></div>
+          <div className="relative w-full flex items-center mb-6 px-1">
+            {/* Bulb */}
+            <div className={`w-10 h-10 rounded-full flex-shrink-0 z-10 -mr-3 border-4 border-white shadow-sm flex items-center justify-center transition-colors duration-500 ${agreePercentage > 0 ? 'bg-[#FF6B00]' : 'bg-gray-300'}`}>
+              <span className="text-xs font-bold text-white">{Math.round(agreePercentage)}°</span>
+            </div>
+            {/* Stem */}
+            <div className="flex-grow h-4 bg-gray-100 rounded-r-full overflow-hidden relative shadow-inner">
+              {/* Mercury */}
+              <div
+                className="h-full bg-gradient-to-r from-orange-400 to-[#FF6B00] transition-all duration-1000 ease-out rounded-r-full"
+                style={{ width: `${agreePercentage}%` }}
+              ></div>
+            </div>
           </div>
 
-          <div className="flex justify-between items-center text-xs text-gray-500 font-medium mb-4">
-            <span className="text-green-600">정말 공감! ({post.agree_count})</span>
-            <span className="text-red-500">내 느낌은 좀 달라 ({post.disagree_count})</span>
+          <div className="flex justify-between items-center text-xs text-gray-500 font-medium mb-4 px-2">
+            <span className="text-[#FF6B00] font-bold">🔥 공감해요 ({post.agree_count})</span>
+            <span className="text-gray-400">❄️ 달라요 ({post.disagree_count})</span>
           </div>
 
           <div className="grid grid-cols-2 gap-3">

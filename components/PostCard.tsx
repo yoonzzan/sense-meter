@@ -63,13 +63,13 @@ const PostCard: React.FC<PostCardProps> = ({ post, onLikePost }) => {
 
       <div className="space-y-4 text-sm">
         {isBest ? (
-          <div className="bg-orange-50 border-l-4 border-orange-300 p-3 rounded-r-md">
+          <div className="bg-rose-50 border-l-4 border-rose-300 p-3 rounded-r-md">
             <div className="flex items-center gap-2 mb-2">
-              <ThumbsUp className="w-4 h-4 text-orange-500" />
-              <h3 className="font-bold text-orange-600">오늘의 최고 👍</h3>
+              <ThumbsUp className="w-4 h-4 text-rose-500" />
+              <h3 className="font-bold text-rose-600">오늘의 최고 👍</h3>
             </div>
             <p className="text-gray-700 leading-relaxed mb-3">{post.situation}</p>
-            <blockquote className="border-l-2 border-orange-200 pl-3 text-gray-600 italic text-xs">
+            <blockquote className="border-l-2 border-rose-200 pl-3 text-gray-600 italic text-xs">
               {post.sensation}
             </blockquote>
           </div>
@@ -86,7 +86,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, onLikePost }) => {
           </div>
         )}
       </div>
-      
+
       <div className="flex items-center justify-between pt-2 border-t border-gray-100">
         <div>
           <span className="inline-block bg-[#FF6B00] bg-opacity-10 text-[#FF6B00] text-xs font-semibold px-2.5 py-1 rounded-full">
@@ -102,8 +102,8 @@ const PostCard: React.FC<PostCardProps> = ({ post, onLikePost }) => {
             <MessageCircle size={16} />
             <span className="text-xs font-medium">{post.comments_count}</span>
           </div>
-          <button 
-            onClick={handleShareClick} 
+          <button
+            onClick={handleShareClick}
             disabled={isSharing}
             className="transition-transform transform hover:scale-110 disabled:opacity-50 disabled:cursor-wait"
             aria-label="포스트 공유"

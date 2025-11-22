@@ -154,11 +154,11 @@ const CreatePost: React.FC<CreatePostProps> = ({ onClose, onPost }) => {
         <div className="grid grid-cols-2 gap-4">
           <button
             onClick={() => setType('best')}
-            className={`flex flex-col items-center justify-center space-y-2 p-4 rounded-lg border-2 transition-all ${type === 'best' ? 'border-[#FF6B00] bg-orange-50' : 'border-gray-300 bg-white'
+            className={`flex flex-col items-center justify-center space-y-2 p-4 rounded-lg border-2 transition-all ${type === 'best' ? 'border-rose-500 bg-rose-50' : 'border-gray-300 bg-white'
               }`}
           >
-            <ThumbsUp className={`w-6 h-6 ${type === 'best' ? 'text-orange-500' : 'text-gray-400'}`} />
-            <span className={`font-bold ${type === 'best' ? 'text-orange-600' : 'text-gray-600'}`}>최고예요</span>
+            <ThumbsUp className={`w-6 h-6 ${type === 'best' ? 'text-rose-500' : 'text-gray-400'}`} />
+            <span className={`font-bold ${type === 'best' ? 'text-rose-600' : 'text-gray-600'}`}>최고예요</span>
           </button>
           <button
             onClick={() => setType('worst')}
