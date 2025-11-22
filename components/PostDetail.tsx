@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import type { Post } from '../types';
 import { ThumbsUp, ThumbsDown, Send, Plus, Trash2, Thermometer } from 'lucide-react';
-import BrainIcon from './icons/BrainIcon';
 import LightbulbIcon from './icons/LightbulbIcon';
 import { formatTimestamp } from '../utils/formatTimestamp';
 import ReactMarkdown from 'react-markdown';
@@ -256,7 +255,7 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, onClose, onPostReaction, 
           {/* AI Analysis */}
           <div className="bg-white p-5 mt-2 border-y border-gray-100">
             <div className="flex items-center gap-2 mb-3">
-              <BrainIcon className="w-6 h-6 text-gray-500" />
+              <span className="text-2xl">🔭</span>
               <h2 className="font-bold text-base text-gray-800">AI와 함께 감각 발휘하기</h2>
             </div>
 
@@ -298,7 +297,7 @@ const PostDetail: React.FC<PostDetailProps> = ({ post, onClose, onPostReaction, 
               <div className="flex flex-col items-center justify-center py-8 space-y-3">
                 <div className="text-4xl animate-bounce">🌊</div>
                 <div className="text-sm text-gray-500 font-medium animate-pulse">
-                  AI가 숨겨진 트렌드 파도를 분석하고 있어요...
+                  AI가 숨겨진 트렌드와 시장 기회를 찾고 있어요...
                 </div>
               </div>
             )}
